@@ -30,11 +30,13 @@ namespace Chap13
         }
         protected override SamplerStatus Sampler(JigPrompts prompts)
         {
-            JigPromptPointOptions optJig = new JigPromptPointOptions("\n请指定等边三角形的一个顶点");
-            optJig.Cursor = CursorType.RubberBand;
-            optJig.UserInputControls = UserInputControls.Accept3dCoordinates;
-            optJig.BasePoint = m_CenterPt.TransformBy(m_mt);
-            optJig.UseBasePoint = true;
+            JigPromptPointOptions optJig = new JigPromptPointOptions("\n请指定等边三角形的一个顶点")
+            {
+                Cursor = CursorType.RubberBand,
+                UserInputControls = UserInputControls.Accept3dCoordinates,
+                BasePoint = m_CenterPt.TransformBy(m_mt),
+                UseBasePoint = true
+            };
             PromptPointResult resJig = prompts.AcquirePoint(optJig);
             Point3d curPt = resJig.Value;
             if(resJig.Status == PromptStatus.Cancel)
@@ -66,6 +68,7 @@ namespace Chap13
             ((Polyline)Entity).Normal = Vector3d.ZAxis;
             ((Polyline)Entity).Elevation = 0.0;
             ((Polyline)Entity).TransformBy(m_mt);
+            ((Polyline)Entity).Closed = true;
             using(Transaction tr = db.TransactionManager.StartTransaction())
             {
                 Circle circle = (Circle)tr.GetObject(m_CirId, OpenMode.ForWrite);

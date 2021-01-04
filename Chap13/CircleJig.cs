@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Chap13
 {
-    public class CircleJig : TriangleCircleJig
+    public class CircleJig : EntityJig
     {
         private Point3d m_CenterPt;
         private double m_Radius = 100.0;
@@ -63,6 +63,11 @@ namespace Chap13
             ((Circle)Entity).Center = m_CenterPt;
             ((Circle)Entity).Radius = m_Radius;
             return true;
+        }
+
+        public Entity GetEntity()
+        {
+            return Entity;
         }
     }
 }
