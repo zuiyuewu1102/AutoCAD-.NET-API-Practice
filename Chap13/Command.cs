@@ -64,5 +64,35 @@ namespace Chap13
                 Tools.AddToModelSpace(db, triangleCircleJig.GetEntity());
             }
         }
+
+        [CommandMethod("JigElRec")]
+        public void JigElRecTest()
+        {
+            Database db = HostApplicationServices.WorkingDatabase;
+            Editor ed = Application.DocumentManager.MdiActiveDocument.Editor;
+            PromptPointOptions optPoint = new PromptPointOptions("\n请指定椭圆外切矩形的一个角点");
+            PromptPointResult resPoint = ed.GetPoint(optPoint);
+            if (resPoint.Status != PromptStatus.OK) return;
+            Point3d pt1 = resPoint.Value;
+            try
+            {
+                db.LoadLineTypeFile("DASHED", "acadiso.lin");
+            }
+            catch { }
+            Polyline polyline = new Polyline();
+            for (int i = 0; i < 4; i++)
+            {
+                polyline.AddVertexAt(i, Point2d.Origin, 0.0, 0.0, 0.0);
+            }
+            polyline.Closed = true;
+            polyline.Linetype = "DASHED";
+            Ellipse ellipse = new Ellipse(Point3d.Origin, Vector3d.ZAxis, new Vector3d(0.0000001, 0.0, 0.0), 1.0, 0.0, 0.0);
+            ElRecJig elRecJig = new ElRecJig(pt1, ellipse, polyline);
+            PromptResult resJig = ed.Drag(elRecJig);
+            if (resJig.Status == PromptStatus.OK)
+            {
+                Tools.AddToModelSpace(db, elRecJig.m_Ellipse);
+            }
+        }
     }
 }

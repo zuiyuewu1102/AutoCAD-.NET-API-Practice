@@ -88,6 +88,7 @@
     <Compile Include="Command.cs" />
     <Compile Include="TriangleCircleJig.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ElRecJig.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
