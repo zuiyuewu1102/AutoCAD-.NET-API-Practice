@@ -18,6 +18,7 @@ namespace Chap13
         public Ellipse m_Ellipse;
         private Polyline m_Polyline;
         private Point3d m_Pt1, m_Pt2;
+
         public ElRecJig(Point3d pt1,Ellipse ellipse,Polyline polyline)
         {
             m_Pt1 = pt1;

@@ -94,5 +94,29 @@ namespace Chap13
                 Tools.AddToModelSpace(db, elRecJig.m_Ellipse);
             }
         }
+
+        [CommandMethod("MGB")]
+        public void MGB()
+        {
+            Database db = HostApplicationServices.WorkingDatabase;
+            Editor ed = Application.DocumentManager.MdiActiveDocument.Editor;
+            double t = 9.0;
+            PromptPointOptions optPoint = new PromptPointOptions("\n请拾取木工板起点坐标");
+            PromptPointResult resPoint = ed.GetPoint(optPoint);
+            if (resPoint.Status != PromptStatus.OK) return;
+            Point3d spt = resPoint.Value;
+            PromptPointOptions ppo = new PromptPointOptions("\n请拾取木工板终点坐标");
+            ppo.UseBasePoint = true;
+            ppo.BasePoint = spt;
+            PromptPointResult ppr = ed.GetPoint(ppo);
+            if (ppr.Status != PromptStatus.OK) return;
+            Point3d ept = ppr.Value;
+            MGBJig mGBJig = new MGBJig(t, spt, ept);
+            PromptResult resJig = ed.Drag(mGBJig);
+            if(resJig.Status == PromptStatus.OK)
+            {
+                Tools.AddToModelSpace(db, mGBJig.GetEntity());
+            }
+        }
     }
 }
